@@ -1,6 +1,9 @@
-# Delete a book record
-```bash
-python manage.py shell
->>> from library.models import Book
->>> b = Book.objects.get(id=1)
->>> b.delete()
+# Delete the book
+from bookshelf.models import Book
+
+book = Book.objects.get(title="Nineteen Eighty-Four")
+book.delete()
+
+# Confirm deletion
+Book.objects.all()
+# Expected output: <QuerySet []>

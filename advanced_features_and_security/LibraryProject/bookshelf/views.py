@@ -1,8 +1,10 @@
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Book
-from .forms import BookForm, ExampleForm
+from .forms import BookForm
+from .forms import ExampleForm  # <-- separate line
 from django.http import HttpResponse
+
 
 
 def my_view(request):

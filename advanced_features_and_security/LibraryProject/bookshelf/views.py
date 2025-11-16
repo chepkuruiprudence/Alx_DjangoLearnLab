@@ -1,8 +1,9 @@
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Book
-from .forms import BookForm
+from .forms import BookForm, ExampleForm  # <-- add ExampleForm here
 from django.http import HttpResponse
+
 
 def my_view(request):
     response = HttpResponse("Hello secure world")

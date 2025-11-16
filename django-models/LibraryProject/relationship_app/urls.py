@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import list_books, LibraryDetailView,  register_view
+from .views import list_books, LibraryDetailView,  register
 from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
@@ -11,5 +11,5 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(template_name="relationship_app/logout.html"), name='logout'),
 
     # Registration still uses your function-based view
-    path('register/', register_view, name='register'),
+    path('register/', register name='register'),
 ]

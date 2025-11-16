@@ -11,5 +11,5 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(template_name="relationship_app/logout.html"), name='logout'),
 
     # Registration still uses your function-based view
-    path('register/', register name='register'),
+    path('register/', register,name='register'),
 ]

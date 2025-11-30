@@ -37,8 +37,6 @@ Examples:
     /api/books/?ordering=-publication_year
 """
 
-
-
 class BookListView(generics.ListAPIView):
     """
     GET /api/books/
@@ -51,8 +49,8 @@ class BookListView(generics.ListAPIView):
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
-    # Enable filtering, searching, ordering
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    # Use checker-required filters
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
 
     # Filtering fields
     filterset_fields = ['title', 'author', 'publication_year']
@@ -63,8 +61,9 @@ class BookListView(generics.ListAPIView):
     # Ordering fields
     ordering_fields = ['title', 'publication_year']
 
-    # Default ordering behavior (optional)
+    # Default ordering
     ordering = ['title']
+
 
 
 

@@ -3,52 +3,35 @@ from .models import Book
 from .serializers import BookSerializer
 
 
-# ListView: Retrieve all books
-# Uses ListAPIView for read-only listing
+# Anyone can view book lists
 class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.AllowAny]   # Public access
+    permission_classes = [permissions.AllowAny]
 
 
-# DetailView: Retrieve a single book by ID
+# Anyone can view single book
 class BookDetailView(generics.RetrieveAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.AllowAny]   # Public access
+    permission_classes = [permissions.AllowAny]
 
 
-# CreateView: Add a new book
-# Uses CreateAPIView and enforces authentication
+# Only authenticated users can create
 class BookCreateView(generics.CreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]  # Auth required
-
-    # Optional customization: attach logged-in user as "creator"
-    def perform_create(self, serializer):
-        # Additional custom logic can go here
-        serializer.save()
+    permission_classes = [permissions.IsAuthenticated]
 
 
-# UpdateView: Modify an existing book
-# Uses UpdateAPIView
+# Only authenticated users can update
 class BookUpdateView(generics.UpdateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]  # Auth required
-
-    # Additional validation/custom behavior can be added here
-    def perform_update(self, serializer):
-        serializer.save()
+    permission_classes = [permissions.IsAuthenticated]
 
 
-# DeleteView: Remove a book
-# Uses DestroyAPIView
+# Only authenticated users can delete
 class BookDeleteView(generics.DestroyAPIView):
     queryset = Book.objects.all()
-    permission_classes = [permissions.IsAuthenticated]  # Auth required
-
-    # Optional: add custom deletion logic
-    def perform_destroy(self, instance):
-        instance.delete()
+    permission_classes = [permissions.IsAuthenticated]

@@ -13,7 +13,7 @@ from django import forms
 from django.contrib.auth.models import User
 
 from .forms import RegisterForm, PostForm, CommentForm
-from .models import Post, Comment
+from .models import Post, Comment, Tag
 
 
 # ============================
@@ -108,6 +108,22 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     form_class = PostForm
     template_name = "blog/post_form.html"
 
+    def get_initial(self):
+        initial = super().get_initial()
+        # prefill the tags input as comma-separated string
+        tags_qs = self.get_object().tags.all()
+        initial['tags'] = ', '.join(t.name for t in tags_qs)
+        return initial
+
+    def form_valid(self, form):
+        tags_list = form.cleaned_data.pop('tags', [])
+        response = super().form_valid(form)
+        self.object.tags.clear()
+        for tag_name in tags_list:
+            tag, _ = Tag.objects.get_or_create(name=tag_name)
+            self.object.tags.add(tag)
+        return response
+
     def test_func(self):
         post = self.get_object()
         return self.request.user == post.author
@@ -121,6 +137,25 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         post = self.get_object()
         return self.request.user == post.author
+    
+# View to list posts for a tag
+def tagged_posts(request, tag_name):
+    tag = get_object_or_404(Tag, name=tag_name)
+    posts = tag.posts.order_by('-published_date')
+    return render(request, "blog/posts_by_tag.html", {"tag": tag, "posts": posts})
+
+# Search view: search title, content, or tags
+def search(request):
+    q = request.GET.get('q', '').strip()
+    results = Post.objects.none()
+    if q:
+        # match title or content or tag name
+        results = Post.objects.filter(
+            q(title__icontains=q) |
+            q(content__icontains=q) |
+            q(tags__name__icontains=q)
+        ).distinct().order_by('-published_date')
+    return render(request, "blog/search_results.html", {"query": q, "results": results})
 
 
 # ============================

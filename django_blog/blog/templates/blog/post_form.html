@@ -1,6 +1,18 @@
-<h2>{{ view.title if view.title else "Post Form" }}</h2>
-<form method="POST">
+<form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form.non_field_errors }}
+    <p>
+        {{ form.title.label_tag }}<br>
+        {{ form.title }}
+    </p>
+    <p>
+        {{ form.content.label_tag }}<br>
+        {{ form.content }}
+    </p>
+    <p>
+        {{ form.tags.label_tag }}<br>
+        {{ form.tags }}<br>
+        <small>{{ form.tags.help_text }}</small>
+    </p>
     <button type="submit">Save</button>
 </form>

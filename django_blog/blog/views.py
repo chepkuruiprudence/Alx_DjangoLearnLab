@@ -15,6 +15,9 @@ from django.contrib.auth.models import User
 from .forms import RegisterForm, PostForm, CommentForm
 from .models import Post, Comment, Tag
 
+from .forms import RegisterForm, PostForm, CommentForm
+
+
 
 # ============================
 #   AUTHENTICATION VIEWS
@@ -68,6 +71,22 @@ def profile_view(request):
         request.user.save()
 
     return render(request, "blog/profile.html")
+
+from django.db.models import Q
+from django.shortcuts import render
+from .models import Post
+
+def search(request):
+    query = request.GET.get('q', '')
+    results = Post.objects.none()
+    if query:
+        results = Post.objects.filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query) |
+            Q(tags__name__icontains=query)  # works with taggit
+        ).distinct()
+    return render(request, "blog/search_results.html", {'results': results, 'query': query})
+
 
 
 # ============================

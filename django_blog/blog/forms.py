@@ -1,5 +1,8 @@
 from django import forms
 from .models import Post, Comment, Tag
+from taggit.forms import TagWidget 
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 class PostForm(forms.ModelForm):
     # user will type tags as a comma-separated string
@@ -10,6 +13,9 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'content', 'tags']
+        widgets = {
+            'tags': TagWidget(attrs={'placeholder': 'Add tags separated by commas'})
+        }
 
     def clean_tags(self):
         raw = self.cleaned_data.get('tags','')
@@ -35,3 +41,18 @@ class CommentForm(forms.ModelForm):
         if len(data) > 2000:
             raise forms.ValidationError("Comment is too long (max 2000 characters).")
         return data
+    
+class RegisterForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+        widgets = {
+            'content': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Write your comment...'})
+        }

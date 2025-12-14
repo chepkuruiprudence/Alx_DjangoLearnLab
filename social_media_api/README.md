@@ -41,3 +41,17 @@ If you want, I can:
 - Pagination enabled
 - Search posts by title or content
 - Users can only edit/delete their own posts or comments
+
+
+## Follow & Feed Functionality
+
+### Follow User
+POST /api/accounts/follow/<user_id>/
+
+### Unfollow User
+POST /api/accounts/unfollow/<user_id>/
+
+### Feed
+GET /api/feed/
+
+The feed displays posts from users that the authenticated user follows, ordered by most recent first.

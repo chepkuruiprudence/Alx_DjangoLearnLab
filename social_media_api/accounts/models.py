@@ -8,11 +8,12 @@ User = settings.AUTH_USER_MODEL
 class User(AbstractUser):
     bio = models.TextField(blank=True)
     profile_picture = models.ImageField(upload_to='profiles/', blank=True, null=True)
-    followers = models.ManyToManyField(
+
+    following = models.ManyToManyField(
         'self',
         symmetrical=False,
-        related_name='following',
-        blank=True
+        blank=True,
+        related_name='followers'
     )
 
     def __str__(self):

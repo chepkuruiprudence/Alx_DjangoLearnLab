@@ -21,3 +21,23 @@ If you want, I can:
 - Add **JWT instead of tokens**
 - Prepare **unit tests**
 - Review before submission
+
+
+## Posts & Comments API
+
+### Endpoints
+- GET /api/posts/
+- POST /api/posts/
+- PUT /api/posts/{id}/
+- DELETE /api/posts/{id}/
+
+- GET /api/comments/
+- POST /api/comments/
+- PUT /api/comments/{id}/
+- DELETE /api/comments/{id}/
+
+### Features
+- Token-based authentication
+- Pagination enabled
+- Search posts by title or content
+- Users can only edit/delete their own posts or comments
